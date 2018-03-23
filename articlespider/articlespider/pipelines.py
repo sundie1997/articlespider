@@ -47,7 +47,7 @@ class MysqlTwistedPipeline(object):
         self.dbpool = dbpool
 
     @classmethod
-    def from_settings(cls,settings):
+    def from_settings(cls,settings):#定义from_settings直接取settings中定义的值
         dbparms = dict(#传入的参数要和MySQLdb.connect里面的connection下面的参数一致
             host=settings["MYSQL_HOST"],
             db=settings["MYSQL_DBNAME"],
@@ -98,7 +98,7 @@ class JsonExporterPipleline(object):
         return item
 
 
-class articleImagePipeline(ImagesPipeline):#继承ImagesPipeline
+class articleImagePipeline(ImagesPipeline):#继承ImagesPipeline，只用来处理封面图的自定义的pipeline，
 
 
     def item_completed(self,results,item,info):#results里面有两个参数，list里面有tuple和dict，dict里面的path是image保存的文件的路径

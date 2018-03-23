@@ -16,7 +16,7 @@ class ArticlespiderItem(scrapy.Item):
     # name = scrapy.Field()
     pass
 
-def date_convert(value):
+def date_convert(value):#date格式转换
     try:
         create_date = datetime.datetime.strptime(value, "%Y/%m/%d").date()
     except Exception as e:
@@ -49,7 +49,7 @@ def remove_comment_tags(value):
 
 class ArticleItemLoader(ItemLoader):
     #自定义itemloader
-    default_output_processor = TakeFirst()#次函数用来取数组中的第一个数据，但是是str类型
+    default_output_processor = TakeFirst()#此函数用来取数组中的第一个数据，但是是str类型
 
 class JobBolearticleItem(scrapy.Item):
     title=scrapy.Field()
@@ -57,7 +57,7 @@ class JobBolearticleItem(scrapy.Item):
         input_processor=MapCompose(date_convert),
     )
     url=scrapy.Field()
-    url_object_id=scrapy.Field()
+    url_object_id=scrapy.Field()#对url_object_id进行md5处理，让url变成一个长度固定的，唯一的值
     praise_nums=scrapy.Field(
         input_processor=MapCompose(get_nums)
     )

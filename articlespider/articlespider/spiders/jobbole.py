@@ -18,12 +18,12 @@ class JobboleSpider(scrapy.Spider):
         # yiled关键字把Request交给scrapy进行下载
         post_nodes=response.css("#archive .floated-thumb .post-thumb a")#提取文章列表的url后交给scrapy进行下载并进行解析
         for post_node in post_nodes:
-            image_url=post_node.css("img::attr(src)").extract_first("")
-            post_url=post_node.css("::attr(href)").extract_first("")
+            image_url=post_node.css("img::attr(src)").extract_first("")#post_nodes下的url中进行进一步的筛选
+            post_url=post_node.css("::attr(href)").extract_first("")#同image_url
             yield Request(url=parse.urljoin(response.url, post_url), meta={"front_image_url": parse.urljoin(response.url, image_url)},
                               callback=self.parse_detail)
 
-        #提取“下一页”节点并交给scrapy进行下载
+        #提取“下一页”的url并交给scrapy进行下载
         next_urls=response.css(".next.page-numbers::attr(href)").extract()[0]#next 和 page-numbers是两个class,这样表示这个节点有next和page
         if next_urls:
             yield Request(url=parse.urljoin(response.url,next_urls),callback=self.parse)
@@ -98,7 +98,7 @@ class JobboleSpider(scrapy.Spider):
         article_item["front_image_url"]=[front_image_url]
         article_item["url_object_id"]=get_md5(response.url)
         '''
-        #通过Item Loader加载item
+        #通过Item Loader加载item，scrapy提供的提取字段的配置函数
         front_image_url = response.meta.get("front_image_url", "")  # 文章封面图
         item_loader=ArticleItemLoader(item=JobBolearticleItem(),response=response)#这里的ItemLoader要换成自定义的ArticleItemLoader
         item_loader.add_css("title", ".entry-header h1::text")
@@ -114,5 +114,5 @@ class JobboleSpider(scrapy.Spider):
 
         article_item = item_loader.load_item()
 
-        yield article_item
+        yield article_item#将填充进来的item传送到pipelines中
 

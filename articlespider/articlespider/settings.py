@@ -11,7 +11,7 @@ import os
 
 BOT_NAME = 'articlespider'
 
-SPIDER_MODULES = ['articlespider.spiders']
+SPIDER_MODULES = ['articlespider.spiders']#存放spiders的路径
 NEWSPIDER_MODULE = 'articlespider.spiders'
 
 
@@ -71,9 +71,9 @@ ITEM_PIPELINES = {
    'articlespider.pipelines.MysqlTwistedPipeline': 1,
 
 }
-IMAGES_URLS_FIELD = "front_image_url"
-project_dir = os.path.abspath(os.path.dirname(__file__))
-IMAGES_STORE = os.path.join(project_dir, 'images')#存放图片的目录
+IMAGES_URLS_FIELD = "front_image_url"#下载图片的地址
+project_dir = os.path.abspath(os.path.dirname(__file__))#通过os获取当前文件所在的相对路径
+IMAGES_STORE = os.path.join(project_dir, 'images')#存放图片的目录，图片的保存路径
 
 #IMAGES_MIN_HEIGHT=100#设置所需图片的长度和宽度
 #IMAGES_MIN_WIDTH=100
